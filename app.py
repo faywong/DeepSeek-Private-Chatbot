@@ -10,36 +10,12 @@ from dotenv import load_dotenv, find_dotenv
 torch.classes.__path__ = [os.path.join(torch.__path__[0], torch.classes.__file__)]  # Fix for torch classes not found error
 load_dotenv(find_dotenv())  # Loads .env file contents into the application based on key-value pairs defined therein, making them accessible via 'os' module functions like os.getenv().
 
-def format_search_results(results: list, max_results: int = 5) -> str:
-    """
-    Format the top search results into a context string.
-    """
-    formatted = []
-    for result in results[:max_results]:
-        title = result.get("title", "No title")
-        url = result.get("url", "No URL")
-        snippet = result.get("content", "No snippet")
-        formatted.append(f"Title: {title}\nURL: {url}\nSnippet: {snippet}")
-    return "\n\n".join(formatted)
-
-def search_web(query: str) -> list:
-    SEARXNG_URL = "http://searxng:8080/search"
-    params = {'q': query, 'format': 'json'}
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36"
-    }
-    response = requests.get(SEARXNG_URL, params=params, headers=headers)
-    if response.status_code != 200:
-        print("Response status code:", response.status_code)
-        print("Response text:", response.text)
-        raise Exception(f"Search query failed with status code {response.status_code}")
-    return response.json().get("results", [])
-
 OLLAMA_BASE_URL = os.getenv("OLLAMA_API_URL", "http://localhost:11434")
 OLLAMA_API_URL = f"{OLLAMA_BASE_URL}/api/generate"
 MODEL= os.getenv("MODEL", "deepseek-r1:7b")                                                      #Make sure you have it installed in ollama
 EMBEDDINGS_MODEL = "nomic-embed-text:latest"
 CROSS_ENCODER_MODEL = "cross-encoder/ms-marco-MiniLM-L-6-v2"
+SEARXNG_URL = os.getenv("SEARXNG_API_URL", "http://searxng:8080/search")
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -72,9 +48,35 @@ if "retrieval_pipeline" not in st.session_state:
     st.session_state.retrieval_pipeline = None
 if "rag_enabled" not in st.session_state:
     st.session_state.rag_enabled = False
+if "search_enabled" not in st.session_state:
+    st.session_state.search_enabled = False
 if "documents_loaded" not in st.session_state:
     st.session_state.documents_loaded = False
 
+def format_search_results(results: list, max_results: int = 5) -> str:
+    """
+    Format the top search results into a context string.
+    """
+    formatted = []
+    for result in results[:max_results]:
+        title = result.get("title", "No title")
+        url = result.get("url", "No URL")
+        snippet = result.get("content", "No snippet")
+        formatted.append(f"Title: {title}\nURL: {url}\nSnippet: {snippet}")
+    return "\n\n".join(formatted)
+
+def search_web(query: str) -> list:
+    params = {'q': query, 'format': 'json'}
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36"
+    }
+    response = requests.get(SEARXNG_URL, params=params, headers=headers)
+    # print(f"response: {response.text}")
+    if response.status_code != 200:
+        print("Response status code:", response.status_code)
+        print("Response text:", response.text)
+        raise Exception(f"Search query failed with status code {response.status_code}")
+    return response.json().get("results", [])
 
 with st.sidebar:                                                                        # 📁 Sidebar
     st.header("📁 Document Management")
@@ -91,7 +93,8 @@ with st.sidebar:                                                                
     
     st.markdown("---")
     st.header("⚙️ RAG Settings")
-    
+
+    st.session_state.search_enabled = st.checkbox("Enable Search", value=True)
     st.session_state.rag_enabled = st.checkbox("Enable RAG", value=True)
     st.session_state.enable_hyde = st.checkbox("Enable HyDE", value=True)
     st.session_state.enable_reranking = st.checkbox("Enable Neural Reranking", value=True)
@@ -129,19 +132,22 @@ if prompt := st.chat_input("Ask about your documents..."):
     with st.chat_message("assistant"):
         response_placeholder = st.empty()
         full_response = ""
-        
+        print(f"chat_message prompt:{prompt}, st.session_state.rag_enabled: {st.session_state.rag_enabled}, st.session_state.retrieval_pipeline:{st.session_state.retrieval_pipeline}")
+
+        cur_source_idx = 1
         # 🚀 Build context
         context = ""
+        if st.session_state.search_enabled:
+            search_results = search_web(prompt)
+            context = f"[Source {cur_source_idx}]: " + format_search_results(search_results, max_results=5)
+        cur_source_idx += 1
         if st.session_state.rag_enabled and st.session_state.retrieval_pipeline:
             try:
-                search_results = search_web(prompt)
-                search_ctx = format_search_results(search_results, max_results=5)
                 docs = retrieve_documents(prompt, OLLAMA_API_URL, MODEL, chat_history)
-                context = "\n".join(
-                    f"[Source {i+1}]: {doc.page_content}" 
+                context = context + "\n" + "\n".join(
+                    f"[Source {cur_source_idx + i + i}]: {doc.page_content}" 
                     for i, doc in enumerate(docs)
                 )
-                context = context + "\n" + "[Source Web Search]: " + search_results
             except Exception as e:
                 st.error(f"Retrieval error: {str(e)}")
         
@@ -162,6 +168,7 @@ if prompt := st.chat_input("Ask about your documents..."):
             Question: {prompt}
             Answer:"""
         
+        print("post to LLM");
         # Stream response
         response = requests.post(
             OLLAMA_API_URL,
@@ -176,6 +183,7 @@ if prompt := st.chat_input("Ask about your documents..."):
             },
             stream=True
         )
+        print("got response from LLM");
         try:
             for line in response.iter_lines():
                 if line:
