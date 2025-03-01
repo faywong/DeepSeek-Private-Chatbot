@@ -1,6 +1,10 @@
 # 🚀 **DeepSeek RAG Chatbot 3.0 – Now with GraphRAG & Chat History Integration!**
 **(100% Free, Private (No Internet), and Local PC Installation)**  
 
+## 介绍
+
+如果你厌倦了 Dify 以及各种 xxx studio 的 all-in-one 的庞杂和配置繁琐，只需要知识库、在线搜索、对话历史等基本功能，私有化部署在自己的 Home Lab 里，想要随时灵活调整，或作为 LLM 练手的起点，那这个项目就是为你准备的。
+
 [![Your Video Title](https://img.youtube.com/vi/xDGLub5JPFE/0.jpg)](https://www.youtube.com/watch?v=xDGLub5JPFE "Watch on YouTube")
 
 🔥 **DeepSeek + NOMIC + FAISS + Neural Reranking + HyDE + GraphRAG + Chat Memory = The Ultimate RAG Stack!**  
@@ -162,15 +166,3 @@ Got feedback or suggestions? Let’s discuss on [**Reddit**](https://www.reddit.
 
 **Enjoy building knowledge graphs, maintaining conversation memory, and harnessing powerful local LLM inference—all from your own machine.**  
 _The future of retrieval-augmented AI is here—no internet required!_
-
-## ** Note **
-ensure this in searxng/settings.yml to support json api search
-
-```yaml
-
-formats:
-      - html
-      - json
-
-```
-
