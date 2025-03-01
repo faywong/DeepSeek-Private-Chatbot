@@ -162,3 +162,15 @@ Got feedback or suggestions? Let’s discuss on [**Reddit**](https://www.reddit.
 
 **Enjoy building knowledge graphs, maintaining conversation memory, and harnessing powerful local LLM inference—all from your own machine.**  
 _The future of retrieval-augmented AI is here—no internet required!_
+
+## ** Note **
+ensure this in searxng/settings.yml to support json api search
+
+```yaml
+
+formats:
+      - html
+      - json
+
+```
+
