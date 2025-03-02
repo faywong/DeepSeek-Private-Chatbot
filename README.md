@@ -150,6 +150,6 @@ docker-compose up
 
 ### 🔗 分享想法
 
-有反馈或建议，可以通过 [**V2EX**](https://www.v2ex.com/member/faywong8888) 联系我! 🚀💡
+有反馈或建议，可以在 [**V2EX讨论**](https://www.v2ex.com/t/1115203) 里发起! 🚀💡
 
 ---
