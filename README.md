@@ -67,7 +67,7 @@ pip install -r requirements.txt
 
 ## **2️⃣ Docker 容器化安装**
 
-### **A) 单容器实例方式 (Ollama 运行在你的宿主机)**
+### **A) docker compose 编排 (Ollama 运行在你的宿主机)**
 
 如果 **Ollama** 已经运行在你的宿主机并侦听在 `localhost:11434`，那么可以直接:
 
@@ -78,7 +78,7 @@ pip install -r requirements.txt
    ```
 2. 对话机器人就运行在 **[http://localhost:8501](http://localhost:8501)**。
 
-### **B) 两容器实例编排方式 (Ollama 运行在 docker 里)**
+### **B) docker compose 编排 (Ollama 运行在 docker 里)**
 
 如果你喜欢 **一切** 在 Docker，那么可以通过 `docker compose` 来编排下:
 ```
