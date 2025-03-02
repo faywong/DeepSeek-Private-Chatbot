@@ -15,8 +15,8 @@
 
 你可以选择以下两种安装方式之一来部署 **DeepSeek Private Chatbot**：
 
-1。**传统 (Python/venv) 安装**  
-2。**Docker 容器化安装** (非常理想的容器化部署方式)
+1. **传统 (Python/venv) 安装**  
+2. **Docker 容器化安装** (非常理想的容器化部署方式)
 
 ---
 
@@ -44,8 +44,8 @@ pip install -r requirements.txt
 ```
 
 ### **步骤 B: 下载 & 设置 Ollama**
-1。**下载 Ollama** → [https://ollama.com/](https://ollama.com/)  
-2。**拉取所需模型**:
+1. **下载 Ollama** → [https://ollama.com/](https://ollama.com/)  
+2. **拉取所需模型**:
    ```
    ollama pull deepseek-r1:8b
    ollama pull rjmalagon/gte-qwen2-1.5b-instruct-embed-f16
@@ -53,15 +53,15 @@ pip install -r requirements.txt
    *注意: 你可以通过编辑 `MODEL` 或 `EMBEDDINGS_MODEL` 环境变量（或 `.env` 文件）来使用其他的模型*   
 
 ### **步骤 C: 运行对话机器人**
-1。启动 **Ollama** 服务:
+1. 启动 **Ollama** 服务:
    ```
    ollama serve
    ```
-2。启动 app.py（Streamlit 应用）:
+2. 启动 app.py（Streamlit 应用）:
    ```
    streamlit run app.py
    ```
-3。打开浏览器访问 **[http://localhost:8501](http://localhost:8501)** 来访问 chatbot UI.
+3. 打开浏览器访问 **[http://localhost:8501](http://localhost:8501)** 来访问 chatbot UI.
 
 ---
 
@@ -71,12 +71,12 @@ pip install -r requirements.txt
 
 如果 **Ollama** 已经运行在你的宿主机并侦听在 `localhost:11434`，那么可以直接:
 
-1。**构建 & 运行**:
+1. **构建 & 运行**:
    ```
    docker-compose build
    docker-compose up
    ```
-2。对话机器人就运行在 **[http://localhost:8501](http://localhost:8501)**。
+2. 对话机器人就运行在 **[http://localhost:8501](http://localhost:8501)**。
 
 ### **B) 两容器实例编排方式 (Ollama 运行在 docker 里)**
 
@@ -126,7 +126,7 @@ docker-compose up
 
 注意：不管你选择以上哪种安装方式，你都可以通过更改 `OLLAMA_API_URL` 环境变量（默认值为：http://localhost:11434）来指向你具体环境下的 ollama 服务地址。
 
-快捷姿势：带有 hf_cache 的现成 [docker 镜像](https://hub.docker.com/repository/docker/faywong8888/deepseek-private-chatbot/)
+快捷姿势：带有 hf_cache 的现成 [docker 镜像](https://hub.docker.com/repository/docker/faywong8888/deepseek-private-chatbot/) 供你本地 docker compose 编排。
 ---
 
 # **这个聊天机器人如何工作**
