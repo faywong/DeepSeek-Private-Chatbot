@@ -21,7 +21,7 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 
 reranker = None                                                        # 🚀 Initialize Cross-Encoder (Reranker) at the global level 
 try:
-    reranker = CrossEncoder(CROSS_ENCODER_MODEL, device=device)
+    reranker = CrossEncoder(CROSS_ENCODER_MODEL, cache_dir="./hf_cache", device=device)
 except Exception as e:
     st.error(f"Failed to load CrossEncoder model: {str(e)}")
 
@@ -39,8 +39,6 @@ st.markdown("""
         .stButton>button { background-color: #00AAFF; color: white; }
     </style>
 """, unsafe_allow_html=True)
-
-
                                                                                     # Manage Session state
 if "messages" not in st.session_state:
     st.session_state.messages = []
@@ -132,7 +130,7 @@ if prompt := st.chat_input("Ask about your documents..."):
     with st.chat_message("assistant"):
         response_placeholder = st.empty()
         full_response = ""
-        print(f"chat_message prompt:{prompt}, st.session_state.rag_enabled: {st.session_state.rag_enabled}, st.session_state.retrieval_pipeline:{st.session_state.retrieval_pipeline}")
+        print(f"chat_message prompt:{prompt}, st.session_state.rag_enabled: {st.session_state.rag_enabled}, st.session_state.retrieval_pipeline:{st.session_state.retrieval_pipeline}, st.session_state.search_enabled: {st.session_state.search_enabled}")
 
         cur_source_idx = 1
         # 🚀 Build context
@@ -140,6 +138,7 @@ if prompt := st.chat_input("Ask about your documents..."):
         if st.session_state.search_enabled:
             search_results = search_web(prompt)
             context = f"[Source {cur_source_idx}]: " + format_search_results(search_results, max_results=10)
+        # print(f"ctx after web search: {context}")
         cur_source_idx += 1
         if st.session_state.rag_enabled and st.session_state.retrieval_pipeline:
             try:
@@ -168,7 +167,6 @@ if prompt := st.chat_input("Ask about your documents..."):
             Question: {prompt}
             Answer:"""
         
-        print("post to LLM");
         # Stream response
         response = requests.post(
             OLLAMA_API_URL,
@@ -183,7 +181,6 @@ if prompt := st.chat_input("Ask about your documents..."):
             },
             stream=True
         )
-        print("got response from LLM");
         try:
             for line in response.iter_lines():
                 if line:

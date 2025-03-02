@@ -126,7 +126,7 @@ docker-compose up
 **Ollama** 和聊天机器人、搜索服务 `searxng` 都在容器中运行。同样在 url **[http://localhost:8501](http://localhost:8501)** 上来访问聊天机器人.
 
 
-*注意：不管你选择以上哪种安装方式，你都可以通过更改 `OLLAMA_API_URL` 环境变量（默认值为：http://localhost:11434）来指向你具体环境下的 ollama 服务地址。*
+注意：不管你选择以上哪种安装方式，你都可以通过更改 `OLLAMA_API_URL` 环境变量（默认值为：http://localhost:11434）来指向你具体环境下的 ollama 服务地址。
 
 ---
 
