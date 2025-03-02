@@ -11,7 +11,9 @@ services:
     restart: unless-stopped
   deepgraph-rag-service:
     container_name: deepgraph-rag-service
-    build: .
+    # use this to dev local app
+    # build: .
+    image: faywong8888/deepseek-private-chatbot:latest
     # Map Streamlit's default port 8501 in the container to 8501 on the host.
     ports:
       - "8501:8501"
@@ -20,7 +22,7 @@ services:
     # If you have a .env file, Docker Compose can load them with env_file: .env
     # Or define them inline:
     environment:
-      - OLLAMA_API_URL=http://localhost:11434
+      - OLLAMA_API_URL=http://192.168.2.74:11434
       - MODEL=deepseek-r1:8b
       - EMBEDDINGS_MODEL=rjmalagon/gte-qwen2-1.5b-instruct-embed-f16:latest
       - CROSS_ENCODER_MODEL=BAAI/bge-reranker-large

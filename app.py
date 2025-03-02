@@ -20,6 +20,7 @@ SEARXNG_URL = os.getenv("SEARXNG_API_URL", "http://searxng:8080/search")
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
 reranker = None                                                        # 🚀 Initialize Cross-Encoder (Reranker) at the global level 
+# note: add local_files_only=True in docker build to use hf_cache
 try:
     reranker = CrossEncoder(CROSS_ENCODER_MODEL, cache_dir="./hf_cache", device=device)
 except Exception as e:
