@@ -1,6 +1,10 @@
 # 🚀 **DeepSeek 私人 Chatbot 1.0 – 一体化集成 GraphRAG & 记录 & 网络搜索**
 **(100% 免费, 私人 (无需联网), 私有化部署)**  
 
+## 介绍
+
+如果你厌倦了 Dify 以及各种 xxx studio 的 all-in-one 的庞杂和配置繁琐，只需要知识库、在线搜索、对话历史等基本功能，私有化部署在自己的 Home Lab 里，想要随时灵活调整，或作为 LLM 练手的起点，那这个项目就是为你准备的。
+
 [![Your Video Title](https://img.youtube.com/vi/xDGLub5JPFE/0.jpg)](https://www.youtube.com/watch?v=xDGLub5JPFE "Watch on YouTube")
 
 🔥 **DeepSeek + NOMIC + FAISS + Neural Reranking + HyDE + GraphRAG + Chat Memory + searxng web search  = 终极 RAG 技术栈!**  

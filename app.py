@@ -53,7 +53,7 @@ if "search_enabled" not in st.session_state:
 if "documents_loaded" not in st.session_state:
     st.session_state.documents_loaded = False
 
-def format_search_results(results: list, max_results: int = 5) -> str:
+def format_search_results(results: list, max_results: int = 10) -> str:
     """
     Format the top search results into a context string.
     """
@@ -139,7 +139,7 @@ if prompt := st.chat_input("Ask about your documents..."):
         context = ""
         if st.session_state.search_enabled:
             search_results = search_web(prompt)
-            context = f"[Source {cur_source_idx}]: " + format_search_results(search_results, max_results=5)
+            context = f"[Source {cur_source_idx}]: " + format_search_results(search_results, max_results=10)
         cur_source_idx += 1
         if st.session_state.rag_enabled and st.session_state.retrieval_pipeline:
             try:
