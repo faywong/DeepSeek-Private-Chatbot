@@ -13,8 +13,8 @@ load_dotenv(find_dotenv())  # Loads .env file contents into the application base
 OLLAMA_BASE_URL = os.getenv("OLLAMA_API_URL", "http://localhost:11434")
 OLLAMA_API_URL = f"{OLLAMA_BASE_URL}/api/generate"
 MODEL= os.getenv("MODEL", "deepseek-r1:7b")                                                      #Make sure you have it installed in ollama
-EMBEDDINGS_MODEL = "nomic-embed-text:latest"
-CROSS_ENCODER_MODEL = "cross-encoder/ms-marco-MiniLM-L-6-v2"
+EMBEDDINGS_MODEL = "rjmalagon/gte-qwen2-1.5b-instruct-embed-f16:latest"
+CROSS_ENCODER_MODEL = "BAAI/bge-reranker-large"
 SEARXNG_URL = os.getenv("SEARXNG_API_URL", "http://searxng:8080/search")
 
 device = "cuda" if torch.cuda.is_available() else "cpu"

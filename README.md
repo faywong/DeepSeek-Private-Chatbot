@@ -1,37 +1,29 @@
-# 🚀 **DeepSeek RAG Chatbot 3.0 – Now with GraphRAG & Chat History Integration!**
-**(100% Free, Private (No Internet), and Local PC Installation)**  
+# 🚀 **DeepSeek 私人 Chatbot 1.0 – 一体化集成 GraphRAG & 记录 & 网络搜索**
+**(100% 免费, 私人 (无需联网), 私有化部署)**  
 
 [![Your Video Title](https://img.youtube.com/vi/xDGLub5JPFE/0.jpg)](https://www.youtube.com/watch?v=xDGLub5JPFE "Watch on YouTube")
 
-🔥 **DeepSeek + NOMIC + FAISS + Neural Reranking + HyDE + GraphRAG + Chat Memory = The Ultimate RAG Stack!**  
+🔥 **DeepSeek + NOMIC + FAISS + Neural Reranking + HyDE + GraphRAG + Chat Memory + searxng web search  = 终极 RAG 技术栈!**  
 
-This chatbot enables **fast, accurate, and explainable retrieval of information** from PDFs, DOCX, and TXT files using **DeepSeek-7B**, **BM25**, **FAISS**, **Neural Reranking (Cross-Encoder)**, **GraphRAG**, and **Chat History Integration**.  
-
----
-
-## **🔹 New Features in This Version**
-
-- **GraphRAG Integration:** Builds a **Knowledge Graph** from your documents for more **contextual** and **relational** understanding.  
-- **Chat Memory History Awareness:** Maintains context by referencing **chat history**, enabling more **coherent** and **contextually relevant** responses.  
-- **Improved Error Handling:** Resolved issues related to **chat history clearing** and other minor bugs for a **smoother user experience**.  
+本聊天机器人通过最小化继承 **DeepSeek-7B**, **BM25**, **FAISS**, **Neural Reranking (Cross-Encoder)**, **GraphRAG**, and **聊天历史**  来支持**（从 PDFs, DOCX, and TXT 文件）** 快速, 精确, 可解释的检索增强的 LLM 服务. 只有一个 ``app.py`` 文件，灵活易拓展，适合作为你的 LLM chatbox 学习起点或定制个性化机器人。 
 
 ---
 
-# **Installation & Setup**
+# **安装 & 设置**
 
-You can install and run the **DeepSeek RAG Chatbot** in one of two ways:
+你可以选择以下两种安装方式之一来部署 **DeepSeek Private Chatbot**：
 
-1. **Traditional (Python/venv) Installation**  
-2. **Docker Installation** (ideal for containerized deployments)
+1. **传统 (Python/venv) 安装**  
+2. **Docker 容器化安装** (非常理想的容器化部署方式)
 
 ---
 
-## **1️⃣ Traditional (Python/venv) Installation**
+## **1️⃣ 传统 (Python/venv) 安装**
 
-### **Step A: Clone the Repository & Install Dependencies**
+### **步骤 A: Clone the Repository & Install Dependencies**
 ```
-git clone https://github.com/SaiAkhil066/DeepSeek-RAG-Chatbot.git
-cd DeepSeek-RAG-Chatbot
+git clone https://github.com/faywong/DeepSeek-Private-Chatbot.git
+cd DeepSeek-Private-Chatbot
 
 # Create a virtual environment
 python -m venv venv
@@ -49,44 +41,44 @@ pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-### **Step B: Download & Set Up Ollama**
-1. **Download Ollama** → [https://ollama.com/](https://ollama.com/)  
-2. **Pull the required models**:
+### **步骤 B: 下载 & 设置 Ollama**
+1. **下载 Ollama** → [https://ollama.com/](https://ollama.com/)  
+2. **拉取所需模型**:
    ```
-   ollama pull deepseek-r1:7b
-   ollama pull nomic-embed-text
+   ollama pull deepseek-r1:8b
+   ollama pull rjmalagon/gte-qwen2-1.5b-instruct-embed-f16
    ```
-   *Note: If you want to use a different model, update `MODEL` or `EMBEDDINGS_MODEL` in your environment variables or `.env` file accordingly.*
+   *注意: 你可以通过编辑 `MODEL` 或 `EMBEDDINGS_MODEL` 环境变量（或 `.env` 文件）来使用其他的模型*   
 
-### **Step C: Run the Chatbot**
-1. Make sure **Ollama** is running on your system:
+### **步骤 C: 运行对话机器人**
+1. 启动 **Ollama** 服务:
    ```
    ollama serve
    ```
-2. Launch the Streamlit app:
+2. 启动 app.py（Streamlit 应用）:
    ```
    streamlit run app.py
    ```
-3. Open your browser at **[http://localhost:8501](http://localhost:8501)** to access the chatbot UI.
+3. 打开浏览器访问 **[http://localhost:8501](http://localhost:8501)** 来访问 chatbot UI.
 
 ---
 
-## **2️⃣ Docker Installation**
+## **2️⃣ Docker 容器化安装**
 
-### **A) Single-Container Approach (Ollama on Your Host)**
+### **A) 单容器实例方式 (Ollama 运行在你的宿主机)**
 
-If **Ollama** is already **installed on your host machine** and listening at `localhost:11434`, do the following:
+如果 **Ollama** 已经运行在你的宿主机并侦听在 `localhost:11434`, 那么可以直接:
 
-1. **Build & Run**:
+1. **构建 & 运行**:
    ```
    docker-compose build
    docker-compose up
    ```
-2. The app is now served at **[http://localhost:8501](http://localhost:8501)**. Ollama runs on your host, and the container accesses it via the specified URL.
+2. 对话机器人就运行在 **[http://localhost:8501](http://localhost:8501)**. 
 
-### **B) Two-Container Approach (Ollama in Docker)**
+### **B) 两容器实例编排方式 (Ollama 运行在 docker 里)**
 
-If you prefer **everything** in Docker:
+如果你喜欢 **一切** 在 Docker，那么可以通过 `docker compose` 来编排下:
 ```
 version: "3.8"
 
@@ -97,6 +89,15 @@ services:
     ports:
       - "11434:11434"
 
+  searxng:
+    image: docker.io/searxng/searxng:latest
+    container_name: searxng
+    ports:
+      - "4000:8080"
+    volumes:
+      - ./searxng:/etc/searxng
+    restart: unless-stopped
+
   deepgraph-rag-service:
     container_name: deepgraph-rag-service
     build: .
@@ -104,61 +105,48 @@ services:
       - "8501:8501"
     environment:
       - OLLAMA_API_URL=http://ollama:11434
-      - MODEL=deepseek-r1:7b
-      - EMBEDDINGS_MODEL=nomic-embed-text:latest
-      - CROSS_ENCODER_MODEL=cross-encoder/ms-marco-MiniLM-L-6-v2
+      - MODEL=deepseek-r1:8b
+      - EMBEDDINGS_MODEL=rjmalagon/gte-qwen2-1.5b-instruct-embed-f16:latest
+      - CROSS_ENCODER_MODEL=BAAI/bge-reranker-large
     depends_on:
       - ollama
+      - searxng
+
 ```
 
-Then:
+然后构建和启动:
 ```
 docker-compose build
 docker-compose up
 ```
-Both **Ollama** and the chatbot run in Docker. Access the chatbot at **[http://localhost:8501](http://localhost:8501)**.
+
+**Ollama** 和聊天机器人、搜索服务 `searxng` 都在容器中运行. 同样在 url **[http://localhost:8501](http://localhost:8501)** 上来访问聊天机器人.
 
 
-### **But consider step A) for comfort..**
+*注意：不管你选择以上哪种安装方式，你都可以通过更改 `OLLAMA_API_URL` 环境变量（默认值为：http://localhost:11434）来指向你具体环境下的 ollama 服务地址。*
+
 ---
 
-# **How the Chatbot Works**
+# **这个聊天机器人如何工作**
 
 1. **Upload Documents**: Add PDFs, DOCX, or TXT files via the sidebar.  
 2. **Hybrid Retrieval**: Combines **BM25** and **FAISS** to fetch the most relevant text chunks.  
-3. **GraphRAG Processing**: Builds a **Knowledge Graph** from your documents to understand relationships and context.  
-4. **Neural Reranking**: Uses a **Cross-Encoder** model for reordering the retrieved chunks by relevance.  
-5. **Query Expansion (HyDE)**: Generates hypothetical answers to **expand** your query for better recall.  
-6. **Chat Memory History Integration**: Maintains context by referencing previous user messages.  
-7. **DeepSeek-7B Generation**: Produces the final answer based on top-ranked chunks.
+3. **GraphRAG Processing**: Builds a **Knowledge Graph** from your documents to understand relationships and context. 
+4. **Web Search**: Do a web search with [searxng](https://github.com/searxng/searxng), and append it the context as data Source for refer.  
+5. **Neural Reranking**: Uses a **Cross-Encoder** model for reordering the retrieved chunks by relevance.  
+6. **Query Expansion (HyDE)**: Generates hypothetical answers to **expand** your query for better recall.  
+7. **Chat Memory History Integration**: Maintains context by referencing previous user messages.  
+8. **DeepSeek-7B Generation**: Produces the final answer based on top-ranked chunks.
 
 ---
 
-## **🔹 Why This Upgrade?**
+## **📌 贡献 **
 
-| Feature                       | Previous Version            | New Version                        |
-|------------------------------|-----------------------------|------------------------------------|
-| **Retrieval Method**         | Hybrid (BM25 + FAISS)      | Hybrid + **GraphRAG**             |
-| **Contextual Understanding** | Limited                    | **Enhanced with Knowledge Graphs** |
-| **User Interface**           | Standard                   | **Customizable + Themed Sidebar**  |
-| **Chat History**             | Not Utilized               | **Full Memory Integration**        |
-| **Error Handling**           | Basic                      | **Improved with Bug Fixes**        |
-
-
+- **克隆** 这个仓库, 提交 **pull requests**, 或创建 **issues**.  
 ---
 
-## **📌 Contributing**
+### **🔗 分享想法 **
 
-- **Fork** this repo, submit **pull requests**, or open **issues** for new features or bug fixes.  
-- We love hearing community suggestions on how to extend or improve the chatbot.
-
----
-
-### **🔗 Connect & Share Your Thoughts!**
-
-Got feedback or suggestions? Let’s discuss on [**Reddit**](https://www.reddit.com/user/akhilpanja/)! 🚀💡
+有反馈或建议，可以通过 [**V2EX**](https://www.v2ex.com/member/faywong8888) 联系我! 🚀💡
 
 ---
-
-**Enjoy building knowledge graphs, maintaining conversation memory, and harnessing powerful local LLM inference—all from your own machine.**  
-_The future of retrieval-augmented AI is here—no internet required!_
