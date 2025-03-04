@@ -61,6 +61,8 @@ pip install -r requirements.txt
    ```
    streamlit run app.py
    ```
+   注意：如果你需要在线搜索，你应该本地启动一个 searxng 服务并[设置其 api 地址](https://github.com/faywong/DeepSeek-Private-Chatbot/blob/main/app.py#L18C26-L18C41)
+
 3. 打开浏览器访问 **[http://localhost:8501](http://localhost:8501)** 来访问 chatbot UI.
 
 ---
@@ -132,14 +134,14 @@ docker-compose up
 
 # **这个聊天机器人如何工作**
 
-1. **Upload Documents**: Add PDFs，DOCX，or TXT files via the sidebar。 
-2. **Hybrid Retrieval**: Combines **BM25** and **FAISS** to fetch the most relevant text chunks。 
-3. **GraphRAG Processing**: Builds a **Knowledge Graph** from your documents to understand relationships and context。
-4. **Web Search**: Do a web search with [searxng](https://github.com/searxng/searxng)，and append it the context as data Source for refer。 
-5. **Neural Reranking**: Uses a **Cross-Encoder** model for reordering the retrieved chunks by relevance。 
-6. **Query Expansion (HyDE)**: Generates hypothetical answers to **expand** your query for better recall。 
-7. **Chat Memory History Integration**: Maintains context by referencing previous user messages。 
-8. **DeepSeek-8B Generation**: Produces the final answer based on top-ranked chunks.
+1. **Upload Documents**: Add PDFs，DOCX，or TXT files via the sidebar. 
+2. **Hybrid Retrieval**: Combines **BM25** and **FAISS** to fetch the most relevant text chunks. 
+3. **GraphRAG Processing**: Builds a **Knowledge Graph** from your documents to understand relationships and context. 
+4. **Web Search**: Do a web search with [searxng](https://github.com/searxng/searxng)，and append it the context as data source for refer.  
+5. **Neural Reranking**: Uses a **Cross-Encoder** model for reordering the retrieved chunks by relevance. 
+6. **Query Expansion (HyDE)**: Generates hypothetical answers to **expand** your query for better recall.  
+7. **Chat Memory History Integration**: Maintains context by referencing previous user messages. 
+8. **DeepSeek-8B Generation**: Produces the final answer based on top-ranked chunks. 
 
 ---
 
