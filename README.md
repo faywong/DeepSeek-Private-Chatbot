@@ -3,11 +3,11 @@
 
 ## 介绍
 
-🔥 **DeepSeek + NOMIC + FAISS + Neural Reranking + HyDE + GraphRAG + Chat Memory + searxng web search  = 终极 RAG 技术栈!**  
+🔥 **DeepSeek + GraphRAG + Neural Reranking Chat Memory + SearXNG web search  = 终极 RAG 技术栈!**  
 
-本聊天机器人通过最小化集成 **DeepSeek-8B**，**qwen2-1.5b 文本嵌入模型**，**BAAI/bge 重排模型(交叉编码器)**，**GraphRAG**，和 **聊天历史**  来支持从 PDFs，DOCX，and TXT 文件快速、精确、可解释的检索增强 LLM 服务。只有一个 ``app.py`` 文件，灵活易拓展，适合作为你的 LLM chatbot 学习起点或定制个性化机器人。 
+本聊天机器人通过最小化集成 **DeepSeek-8B**，**qwen2-1.5b 文本嵌入模型**，**BAAI/bge 重排模型(交叉编码器)**，**GraphRAG**，和 **聊天历史**  来支持从 PDFs，DOCX 和 TXT 文件快速、精确、可解释地检索增强 LLM 服务。主体是一个 ``app.py`` 文件，灵活易拓展，适合作为学习的起点或定制个性化机器人。 
 
-如果你厌倦了 Dify 以及各种 xxx studio 的 all-in-one 的庞杂和配置繁琐，只需要知识库、在线搜索、对话历史等基本功能，私有化部署在自己的 Home Lab 里，随时可调整控制每个细节，那这个项目就是为你准备的。
+如果你厌倦了 Dify 及各种 xxx studio all-in-one 的庞杂配置，仅需要知识库、在线搜索、对话历史等基本功能，私有化部署在自己的 Home Lab 里，全力掌控每个细节，那这个项目就是为你准备的。
 
 ---
 
