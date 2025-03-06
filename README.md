@@ -3,7 +3,7 @@
 
 ## 介绍
 
-🔥 **DeepSeek + GraphRAG + Neural Reranking Chat Memory + SearXNG web search  = 终极 RAG 技术栈!**  
+🔥 **DeepSeek + GraphRAG + Neural Reranking + Chat Memory + SearXNG web search  = 终极 RAG 技术栈!**  
 
 本聊天机器人通过最小化集成 **DeepSeek-8B**，**qwen2-1.5b 文本嵌入模型**，**BAAI/bge 重排模型(交叉编码器)**，**GraphRAG**，和 **聊天历史**  来支持从 PDFs，DOCX 和 TXT 文件快速、精确、可解释地检索增强 LLM 服务。主体是一个 ``app.py`` 文件，灵活易拓展，适合作为学习的起点或定制个性化机器人。 
 
