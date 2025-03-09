@@ -5,7 +5,9 @@ import re
 def build_knowledge_graph(docs):
     G = nx.Graph()
     for doc in docs:
-        entities = re.findall(r'\b[A-Z][a-z]+(?: [A-Z][a-z]+)*\b', doc.page_content)
+        paragraphs = re.split(r'[\n,，。.]+', doc.page_content)
+        entities = [p.strip() for p in paragraphs if p.strip()]
+        # print(f"entities: {entities}")
         # Ensure meaningful relationships exist
         if len(entities) > 1:
             for i in range(len(entities) - 1):
